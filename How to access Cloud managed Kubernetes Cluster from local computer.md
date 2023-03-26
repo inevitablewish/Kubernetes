@@ -10,7 +10,7 @@ Ensure you are connected with EKS Cluster using the following AWS Command
 kubectl edit -n kube-system configmap/aws-auth
 
 1. This will open a manifest which requires to be updated
-' '
+'''
 apiVersion: v1
 data:
   mapRoles: |
@@ -33,7 +33,7 @@ metadata:
   namespace: kube-system
   resourceVersion: "27434"
   uid: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-  ' '
+  '''
 
 1. The above highlighted information is required to be added and saved.
 1. Once done, you can test it by listing the cluster nodes from local computer (Ensuring KUbectl is already installed on local computer)
