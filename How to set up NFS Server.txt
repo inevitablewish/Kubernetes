@@ -1,0 +1,50 @@
+How to set up Network File Storage in Debain and Red Hat
+For Redhat / AWS
+Firstly update the packages by using sudo yum update
+
+1. Install nfs-utilities in the server
+		sudo yum install nfs-utils
+2. Enable the nfs-server after installation
+		sudo systemctl enable --now nfs-server
+3. We must also start the rpcbind service, which NFS uses for port mapping
+		sudo systemctl enable --now rpcbind
+4. Create a Directory that you would like to share
+		sudo mkdir -p /mnt/sharedfolder
+5. Export the directory you would like to share to broadcast to the network.
+		echo "/mnt/sharedfolder 172.31.0.0/16(rw)" > /etc/exports -- valid for subnet or VPC
+6. Change the ownership of the Directory for its accessibility
+		sudo chown nobody:nobody /mnt/sharedfolder
+		sudo chmod 775 /mnt/sharedfolder
+7. Broadcast the exported directory
+		sudo exportfs -r
+8. Install the firewall is not already installed
+		sudo yum install firewall*
+9. Enable and start firewalld
+		sudo systemctl enable firewalld
+		sudo systemctl start firewalld
+8. Add the nfs service to firewall so it is accessible through the network.
+		sudo firewall-cmd --add-service nfs --permanent
+
+It should print success if worked
+=============================
+Setup client server
+
+1. Create a directory that you would like to share
+		sudo mkdir /nfs/imports/myshare
+2. Then mount the NFS Volume
+		sudo mount -v -t nfs 192.168.122.17:/nfs/exports/myshare /nfs/imports/myshare/
+3. This setting can be permanenet by following
+		192.168.122.17:/nfs/exports/myshare   /nfs/imports/myshare/  nfs  rw 0 0
+4. Verify the mount
+		mount | grep -i nfs 
+5. It should show the following outcome
+		192.168.122.17:/nfs/exports/myshare on /nfs/imports/myshare ...
+
+===============================
+Testing
+
+1. SSH into the Node/ Instance where NFS is set up
+		ssh -i key.pem ec2-user@instance-ip 
+2. Once in the NFS server, go to /nfs/exports/myshare to confirm if it is existing.
+
+		
