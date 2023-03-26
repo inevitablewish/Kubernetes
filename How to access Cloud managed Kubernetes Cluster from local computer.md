@@ -10,7 +10,7 @@ Ensure you are connected with EKS Cluster using the following AWS Command
 kubectl edit -n kube-system configmap/aws-auth
 
 1. This will open a manifest which requires to be updated
-```
+```yaml
 apiVersion: v1
 data:
   mapRoles: |
